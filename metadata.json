@@ -1,0 +1,6 @@
+{
+  "name": "Brolly Academy",
+  "description": "AI-powered Learning & Career platform for upskilling, mock interviews, and placement tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
