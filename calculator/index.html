@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101010"><title>Brolly Academy Calculator</title>
+<style>
+:root{color-scheme:dark;--bg:#101010;--panel:#1c1c1c;--key:#292929;--yellow:#fff300;--text:#f7f7f7;--muted:#a5a5a5;--line:#393939}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0,#302d00,transparent 48%),var(--bg);color:var(--text);font:15px Inter,system-ui,Arial,sans-serif;min-height:100vh}
+header{max-width:1080px;margin:auto;padding:24px 20px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;gap:11px;align-items:center;font-weight:800}.logo{width:38px;height:38px;border-radius:12px;background:var(--yellow);color:#111;display:grid;place-items:center;font-size:22px}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.7px;margin-top:3px}a{color:var(--yellow);text-decoration:none}
+main{max-width:1080px;margin:20px auto 55px;padding:0 20px;display:grid;grid-template-columns:minmax(300px,1.2fr) minmax(260px,.8fr);gap:20px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 18px 45px #0005}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.muted{color:var(--muted);font-size:12px;letter-spacing:1.4px;text-transform:uppercase}.toggle{background:transparent;border:1px solid #555;color:var(--text);border-radius:20px;padding:8px 12px;cursor:pointer}
+.display{background:#101010;border:1px solid #333;border-radius:15px;padding:17px;min-height:115px;display:flex;flex-direction:column;justify-content:flex-end;margin-bottom:14px}.expr{color:var(--muted);text-align:right;min-height:20px;overflow-wrap:anywhere}.result{text-align:right;font-size:clamp(32px,6vw,46px);font-weight:650;overflow-wrap:anywhere;margin-top:6px}
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.scientific{display:none;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:9px}.scientific.show{display:grid}.key{min-height:55px;border:1px solid #393939;border-radius:12px;background:var(--key);color:var(--text);font-size:18px;cursor:pointer}.scientific .key{min-height:43px;font-size:13px}.key:hover{filter:brightness(1.25)}.key:focus-visible,.toggle:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}.op,.fn{color:var(--yellow)}.clear{color:#ffaaaa}.equal{background:var(--yellow);border-color:var(--yellow);color:#111;font-weight:800}.zero{grid-column:span 2}
+.side{display:flex;flex-direction:column;gap:16px}.side .panel{padding:18px}.sidehead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.side h2{font-size:16px;margin:0}.linkbtn{background:none;border:0;color:var(--yellow);cursor:pointer}.history{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow:auto}.item{width:100%;text-align:right;background:#141414;border:1px solid #333;border-radius:10px;padding:10px;color:var(--text);cursor:pointer}.item small{display:block;color:var(--muted);margin-bottom:4px}.empty,.about{font-size:13px;color:var(--muted);line-height:1.6}.toolgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tools label{display:block;color:var(--muted);font-size:12px;margin:12px 0 6px}.tools input{width:100%;padding:11px;border-radius:9px;border:1px solid #444;background:#111;color:white;font:inherit}.toolbtn{width:100%;padding:10px;margin-top:10px;border:0;border-radius:9px;background:var(--yellow);color:#111;font-weight:750;cursor:pointer}.toolresult{color:var(--yellow);font-weight:700;min-height:22px;margin-top:8px}footer{text-align:center;color:#777;font-size:12px;padding:0 20px 28px}
+@media(max-width:740px){main{grid-template-columns:1fr;padding:0 13px;margin-top:8px}header{padding:18px 14px}.panel{padding:14px}.key{min-height:52px}.side{gap:12px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">B</div><div>Brolly Academy<small>LEARN · PRACTISE · GROW</small></div></div><a href="https://brollyacademy.com/" target="_blank" rel="noopener">Visit website ↗</a></header>
+<main>
+<section class="panel" aria-label="Calculator">
+<div class="top"><span class="muted">Smart calculator</span><button class="toggle" id="sciToggle">Scientific mode +</button></div>
+<div class="display" aria-live="polite"><div class="expr" id="expr">Ready</div><div class="result" id="result">0</div></div>
+<div class="scientific" id="scientific">
+<button class="key fn" data-insert="sin(">sin</button><button class="key fn" data-insert="cos(">cos</button><button class="key fn" data-insert="tan(">tan</button><button class="key fn" data-insert="log(">log</button><button class="key fn" data-insert="ln(">ln</button>
+<button class="key fn" data-insert="asin(">sin⁻¹</button><button class="key fn" data-insert="acos(">cos⁻¹</button><button class="key fn" data-insert="atan(">tan⁻¹</button><button class="key fn" data-insert="sqrt(">√</button><button class="key fn" data-insert="^2">x²</button>
+<button class="key fn" data-insert="^">xʸ</button><button class="key fn" data-insert="!">x!</button><button class="key fn" data-insert="pi">π</button><button class="key fn" data-insert="e">e</button><button class="key fn" data-insert="(">(</button>
+<button class="key fn" data-insert=")">)</button><button class="key fn" data-insert="%">%</button><button class="key fn" id="angle">DEG</button><button class="key fn" data-insert="ans">Ans</button><button class="key fn" data-action="copy">Copy</button>
+</div>
+<div class="keys">
+<button class="key clear" data-action="clear">AC</button><button class="key fn" data-action="back">⌫</button><button class="key fn" data-insert="%">%</button><button class="key op" data-insert="/">÷</button>
+<button class="key" data-insert="7">7</button><button class="key" data-insert="8">8</button><button class="key" data-insert="9">9</button><button class="key op" data-insert="*">×</button>
+<button class="key" data-insert="4">4</button><button class="key" data-insert="5">5</button><button class="key" data-insert="6">6</button><button class="key op" data-insert="-">−</button>
+<button class="key" data-insert="1">1</button><button class="key" data-insert="2">2</button><button class="key" data-insert="3">3</button><button class="key op" data-insert="+">+</button>
+<button class="key zero" data-insert="0">0</button><button class="key" data-insert=".">.</button><button class="key equal" data-action="equals">=</button>
+</div></section>
+<aside class="side">
+<section class="panel"><div class="sidehead"><h2>Calculation history</h2><button class="linkbtn" id="clearHistory">Clear all</button></div><div class="history" id="history"><div class="empty">Your calculations will appear here.</div></div></section>
+<section class="panel tools"><h2>Student tools</h2><div class="toolgrid"><div><label for="percent">Percentage (%)</label><input id="percent" type="number" placeholder="15"></div><div><label for="of">Of this number</label><input id="of" type="number" placeholder="800"></div></div><button class="toolbtn" id="percentBtn">Calculate percentage</button><div class="toolresult" id="percentOut"></div>
+<label for="average">Average calculator</label><input id="average" placeholder="70, 80, 90"><button class="toolbtn" id="averageBtn">Calculate average</button><div class="toolresult" id="averageOut"></div></section>
+<section class="panel"><h2>About this tool</h2><p class="about">A simple browser-based learning utility from Brolly Academy. No account or API key is required. Your calculation history stays in this browser.</p><a href="https://brollyacademy.com/">brollyacademy.com</a></section>
+</aside></main><footer>© <span id="year"></span> Brolly Academy · Calculator learning utility</footer>
+<script>
+const $=s=>document.querySelector(s);let expression='',answer=0,degrees=true,history=[];
+try{history=JSON.parse(localStorage.getItem('brollyCalcHistory')||'[]')}catch{}
+const fmt=n=>{if(!Number.isFinite(n))throw Error('Math error');return Number(n.toPrecision(12)).toString()};
+function tokenize(s){const re=/\s*(\d+(?:\.\d*)?|\.\d+|[a-z]+|[()+\-*/^!%])\s*/gy;let a=[],i=0;s=s.toLowerCase();while(i<s.length){re.lastIndex=i;const m=re.exec(s);if(!m)throw Error('Invalid expression');a.push(m[1]);i=re.lastIndex}return a}
+function calculate(src){let t=tokenize(src),p=0;const peek=()=>t[p],take=()=>t[p++];const trig={sin:x=>Math.sin(degrees?x*Math.PI/180:x),cos:x=>Math.cos(degrees?x*Math.PI/180:x),tan:x=>Math.tan(degrees?x*Math.PI/180:x),asin:x=>degrees?Math.asin(x)*180/Math.PI:Math.asin(x),acos:x=>degrees?Math.acos(x)*180/Math.PI:Math.acos(x),atan:x=>degrees?Math.atan(x)*180/Math.PI:Math.atan(x),log:Math.log10,ln:Math.log,sqrt:Math.sqrt};function fact(n){if(n<0||n>170||!Number.isInteger(n))throw Error('Invalid factorial');let r=1;for(let i=2;i<=n;i++)r*=i;return r}
+function atom(){let x=peek();if(x==='+'||x==='-'){take();let v=atom();return x==='-'?-v:v}if(x==='('){take();let v=add();if(take()!==')')throw Error('Missing )');return v}if(x==='pi'){take();return Math.PI}if(x==='e'){take();return Math.E}if(x==='ans'){take();return answer}if(x&&trig[x]){take();if(take()!=='(')throw Error('Expected (');let v=add();if(take()!==')')throw Error('Missing )');return trig[x](v)}if(x&&/^(\d|\.)/.test(x)){take();return Number(x)}throw Error('Expected number')}
+function post(){let v=atom();while(peek()==='!'||peek()==='%'){let op=take();v=op==='!'?fact(v):v/100}return v}
+function power(){let v=post();if(peek()==='^'){take();v=Math.pow(v,unary())}return v}function unary(){return power()}
+function mul(){let v=unary();while(peek()==='*'||peek()==='/'){let op=take(),b=unary();v=op==='*'?v*b:v/b}return v}
+function add(){let v=mul();while(peek()==='+'||peek()==='-'){let op=take(),b=mul();v=op==='+'?v+b:v-b}return v}
+let v=add();if(p<t.length)throw Error('Unexpected token');if(!Number.isFinite(v))throw Error('Math error');return v}
+function preview(){try{return fmt(calculate(expression))}catch{return expression?'…':'0'}}
+function render(){ $('#expr').textContent=expression||'Ready';$('#result').textContent=preview()}
+function insert(s){expression+=s;render()}
+function renderHistory(){let el=$('#history');el.innerHTML='';if(!history.length){el.innerHTML='<div class="empty">Your calculations will appear here.</div>';return}history.forEach(h=>{let b=document.createElement('button');b.className='item';let sm=document.createElement('small');sm.textContent=h.expression;let strong=document.createElement('strong');strong.textContent=h.result;b.append(sm,strong);b.onclick=()=>{expression=h.result;render()};el.append(b)})}
+function equals(){try{let n=calculate(expression),r=fmt(n);history.unshift({expression,result:r});history=history.slice(0,25);localStorage.setItem('brollyCalcHistory',JSON.stringify(history));answer=n;renderHistory();$('#expr').textContent='= '+r;$('#result').textContent=r;expression=r}catch(e){$('#expr').textContent=e.message||'Invalid expression';$('#result').textContent='Error'}}
+document.querySelectorAll('[data-insert]').forEach(b=>b.addEventListener('click',()=>insert(b.dataset.insert)));
+document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',async()=>{let a=b.dataset.action;if(a==='clear'){expression='';render()}if(a==='back'){expression=expression.slice(0,-1);render()}if(a==='equals')equals();if(a==='copy'){try{await navigator.clipboard.writeText($('#result').textContent);$('#expr').textContent='Copied'}catch{$('#expr').textContent='Copy not available'}}}));
+$('#sciToggle').onclick=()=>{let on=$('#scientific').classList.toggle('show');$('#sciToggle').textContent=on?'Scientific mode −':'Scientific mode +'};
+$('#angle').onclick=e=>{degrees=!degrees;e.target.textContent=degrees?'DEG':'RAD';render()};
+$('#clearHistory').onclick=()=>{history=[];localStorage.removeItem('brollyCalcHistory');renderHistory()};
+$('#percentBtn').onclick=()=>{let p=$('#percent').value,n=$('#of').value;$('#percentOut').textContent=p!==''&&n!==''?fmt(Number(p)*Number(n)/100):'Enter both values'};
+$('#averageBtn').onclick=()=>{let s=$('#average').value.trim(),a=s.split(',').map(x=>x.trim());$('#averageOut').textContent=s&&a.every(x=>x!==''&&Number.isFinite(Number(x)))?'Average: '+fmt(a.reduce((v,x)=>v+Number(x),0)/a.length):'Enter comma-separated numbers'};
+document.addEventListener('keydown',e=>{if(e.target.matches('input'))return;let k=e.key;if(/[0-9.]/.test(k)&&k.length===1)insert(k);else if(['+','-','*','/','(',')','%','^','!'].includes(k)){e.preventDefault();insert(k)}else if(k==='Enter'||k==='='){e.preventDefault();equals()}else if(k==='Backspace'){expression=expression.slice(0,-1);render()}else if(k==='Escape'){expression='';render()}});
+$('#year').textContent=new Date().getFullYear();renderHistory();render();
+</script></body></html>
